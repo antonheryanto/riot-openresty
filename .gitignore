@@ -1,0 +1,7 @@
+.hg
+.hgignore
+.swp
+conf
+node_modules
+dist
+logs

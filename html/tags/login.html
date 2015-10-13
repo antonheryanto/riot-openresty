@@ -1,0 +1,47 @@
+<login class="row">
+<div class="col-md-offset-4 col-md-4">
+  <div class="panel panel-primary">
+
+    <div class="panel-body">
+      <h4 class="text-center">Login</h4>
+      <div class="alert"></div>
+      <form onsubmit="{login}">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Username" name="name" 
+          value="anton.heryanto@gmail.com" autofocus required>
+        </div>
+        <div class="form-group">
+          <input type="password" class="form-control" placeholder="Password" name="password" 
+          value="password" required>
+        </div>
+        <div class="form-group">
+          <button class="btn btn-primary pull-right">Login</button>
+        </div>
+        <div class="checkbox checked">
+          <label>
+            <input type="checkbox" name="remember_me">
+            Remember me
+            <span class="ctrl-overlay fa fa-check"></span>
+          </label>
+        </div>
+      </form>
+    </div>
+    <div class="panel-footer">
+      <div class="text-center">
+        <a href="#!/user/forgot">Forgot your password?</a>
+      </div>      
+    </div>
+  </div>
+</div>
+<script>
+  this.login = function (e) { 
+    e.preventDefault()
+    riot.login({ 
+      name: e.target.name.value,
+      password: e.target.password.value
+    }).fail(function (xhr) {
+      console.log(xhr.responseJSON)
+    })
+}
+</script>
+</login>
