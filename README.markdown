@@ -17,7 +17,7 @@ Prerequisites
 Installation
 ============
 
-* git clone https://github.com/antonheryanto/riot-openresty
+* `git clone --recursive https://github.com/antonheryanto/riot-openresty`
 * `make prepare`
 * `make`
 * browse [dev](http://localhost:8000) or [dist](http://localhost:8000/dist)
