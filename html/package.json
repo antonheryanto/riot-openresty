@@ -1,7 +1,15 @@
 {
+  "name": "riot-openresty",
+  "description": "riot v2 example",
+  "license": "MIT",
+  "author": "Anton Heryanto Hasan",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/antonheryanto/riot-openresty"
+  },
   "scripts": {
     "build:js": "riot -t none --ext html tags dist/app.min.js && cat index.js >> dist/app.min.js",
-    "build": "npm run build:js && uglifyjs dist/app.min.js -cmo dist/app.min.js"
+    "build": "cp index.dev.html dist/index.html && npm run build:js && uglifyjs dist/app.min.js -cmo dist/app.min.js"
   },
   "devDependencies": {
     "bootstrap": "^3.3.5",
