@@ -15,3 +15,4 @@ reload:
 
 prepare: 
 	@mkdir -p resty && cd resty && ln -sf ../lib/*/lib/resty/* .
+	@cd html && npm install && npm run build
