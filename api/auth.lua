@@ -8,25 +8,20 @@ local ex = { message = 'please provide username and password' }
 
 local _M = {}
 
-function _M.get_id(self)
+function _M.get(self)
     local token = self.arg.token or var.cookie_auth
     if not token then return end
 
     local id = db:get('auth:'..token)
-    return id, token
+    return id and user.get(self, id), nil, token
 end
 
-function _M.get(self)
+function _M.post(self)
     local m = self.data or self.arg
-    if not m.name or not m.password then
-        local id = _M.get_id(self)
-        return id and user.get(self, id) or ex
-    end
+    if not m.name or not m.password then return ex end
     
     local id = db:get('email:'.. m.name)
-    if not id or m.password ~= 'password' then
-        return ex
-    end
+    if not id or m.password ~= 'password' then return ex end
 
     if not id then return ex end
 
@@ -43,14 +38,12 @@ function _M.get(self)
     return u
 end
 
-_M.post = _M.get
-
 function _M.delete(self)
-    local id, token = _M.get_id(self) 
-    if not id then return end
+    local u, status, token = _M.get(self) 
+    if not u then return end
 
     db:delete('auth:'..token)
-    db:set('user:'..id..':auth:'..md5(time()))
+    db:set('user:'..u.id..':auth:'..md5(time()))
 end
 
 return _M
