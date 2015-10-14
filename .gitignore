@@ -1,7 +1,8 @@
 .hg
 .hgignore
-.swp
+*.swp
 conf
 node_modules
 dist
 logs
+resty
