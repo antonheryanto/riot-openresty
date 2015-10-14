@@ -4,8 +4,8 @@ var riot = window.riot,
 riot.app = function (conf) {
   var base = '/api/'
 
+  conf = conf || {}
   riot.observable(riot)
-  riot.conf = riot.conf || {}
   riot.cache = riot.cache || {}
 
   riot.get = function (api, arg, fn) {
@@ -20,6 +20,12 @@ riot.app = function (conf) {
 
   riot.set = function (api, data, fn) {
     return jQuery.post(base + api, data, fn)
+  }
+
+  riot.del = function(api, arg, fn) {
+    arg = arg || {}
+    arg.method = 'DELETE'
+    return jQuery.get(base + api, arg, fn)
   }
 
   riot.login = function (data) {
@@ -42,15 +48,35 @@ riot.app = function (conf) {
     })
   }
 
-  riot.load = function (tag, id, action) {
-    riot.trigger('load', tag, id, action)
+  riot.load = function (route) {
+    riot.trigger('load', route)
   }
 
-  riot.route.parser(function (hash) {
-    return hash.slice(2).split('/')
-  })
+  riot.parse_hash = function (hash) {
+    var raw = hash.slice(2).split('?'),
+      uri = raw[0].split('/'),
+      qs = raw[1],
+      tag = uri[0],
+      params = {},
+      n = uri.length
 
+    if (qs) {
+      qs.split('&').forEach(function (v) {
+        var c = v.split('=')
+        params[decodeURIComponent(c[0])] = decodeURIComponent(c[1])
+      })
+    }
+
+    if (n === 1) return { tag: tag ? tag + '-index' : 'home', params: params }
+
+    params.id = parseInt(uri[1], 10) || undefined
+    var action = !params.id ? uri[1] : (uri[2] || 'details')
+
+    tag = tag + '-' + action
+    return { tag: tag, params: params }
+  }
+
+  riot.route.parser(riot.parse_hash)
   riot.route(riot.load)
-
-  riot.mount('*')
+  riot.mount('*', conf)
 }
