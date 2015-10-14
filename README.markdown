@@ -14,17 +14,17 @@ Prerequisites
 * openresty
 * npm
 
-Usage
-=====
+Installation
+============
 
-* install html dependency: `cd html && npm install`
-* clone [lua-resty-stack](http://github.com/antonheryanto/lua-resty-stack) to lib
-* link or copy: `cp lib/lua-resty-stack/lib/resty .`
-* run openresty: `nginx -p. -c conf/nginx.conf`
-* [browse](http://localhost:8000)
+* git clone https://github.com/antonheryanto/riot-openresty
+* `make prepare`
+* `make`
+* browse [dev](http://localhost:8000) or [dist](http://localhost:8000/dist)
 
 Author
 ======
 
 Anton Heryanto Hasan <anton.heryanto@gmail.com>
+
 License MIT
