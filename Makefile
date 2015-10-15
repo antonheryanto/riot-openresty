@@ -1,6 +1,6 @@
 mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
 DIR = $(dir $(mkfile_path))
-NGINX = nginx
+NGINX = nginx -c conf/nginx.conf
 
 start: 
 	@$(NGINX) -p $(DIR) 
