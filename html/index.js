@@ -60,7 +60,7 @@ function App (conf) {
   this.load = function (tag, params) {
     var route = typeof tag === 'string' ? { tag: tag, params: params } : tag
     riot.trigger('before:load', this)
-    this.tags = riot.mount('#main', route.tag, { route: route.params })
+    this.tags = riot.mount(conf.main, route.tag, { route: route.params })
     riot.trigger('after:load', this)
   }
 
