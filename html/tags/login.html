@@ -36,11 +36,9 @@
 <script>
   this.login = function (e) { 
     e.preventDefault()
-    riot.login({ 
+    riot.auth.login({ 
       name: e.target.name.value,
       password: e.target.password.value
-    }).fail(function (xhr) {
-      console.log(xhr.responseJSON)
     })
 }
 </script>

@@ -15,7 +15,7 @@
         <ul class="nav navbar-nav navbar-right">
           <li><a href="#!/user">User</a></li>
           <li><a href="#!/user/{user.id}">{user.name}</a></li>
-          <li><a href="#!/" onclick="{riot.logout}">Logout</a></li>
+          <li><a href="#!/" onclick="{riot.auth.logout}">Logout</a></li>
         </ul>
       </div>
     </div>
@@ -28,16 +28,14 @@
       self.logged = e !== 'logout'
       if (self.logged) {
         self.user = u
-        riot.load(riot.parse_hash(location.hash.slice(1)))
+        riot.app.load(riot.app.parser(location.hash.slice(1)))
       }
       self.update()
     }).on('loading loaded', function (e) {
       self.loading = e === 'loading'
       self.update()
-    }).on('load', function (route) {
-      riot.mount('#main', route.tag, { route: route.params })
     })
 
-    self.on('mount', riot.logged)
+    self.on('mount', riot.auth.logged)
   </script>
 </app>

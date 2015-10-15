@@ -1,4 +1,4 @@
-<user-index>
+<user>
   <a href="#!/user/edit" class="btn btn-primary pull-right">Add new</a>
   <h1>User</h1>
   <table class="table table-bordered">
@@ -16,7 +16,7 @@
         <td><a href="#!/user/{m.id}">{m.name}</a></td>
         <td>{m.email}</td>
         <td>
-          <a href="#!/user/{m.id}/edit"><i class="glyphicon glyphicon-pencil"></i></a>
+          <a class="btn btn-default btn-xs" href="#!/user/{m.id}/edit"><i class="glyphicon glyphicon-pencil"></i></a>
           <button class="btn btn-danger btn-xs" onclick="{parent.remove}"><i class="glyphicon glyphicon-trash"></i></button>
         </td>
       </tr>
@@ -24,19 +24,19 @@
   </table>
     <script>
     var self = this
-    riot.get('user', function(data) {
+    riot.store.get('user', function(data) {
       self.models = data
       self.update()
     })
 
     self.remove = function(e) {
-      riot.del('user', { id: e.item.m.id }, function() {
+      riot.store.del('user', { id: e.item.m.id }, function() {
         e.item.m._destroy = true
         self.update()
       })
     }
   </script>
-</user-index>
+</user>
 
 <user-edit>
   <form onsubmit="{save}">
@@ -57,7 +57,7 @@
   <script>
     var self = this
     if (opts.route.id) {
-      riot.get('user', opts.route, function(data) {
+      riot.store.get('user', opts.route, function(data) {
         self.model = data
         self.update()
       })
@@ -65,7 +65,7 @@
 
     self.save = function(e) {
       e.preventDefault()
-      riot.set('user', { 
+      riot.store.set('user', { 
         id: e.target.id.value,
         name: e.target.name.value,
         email: e.target.email.value
@@ -75,12 +75,13 @@
     }
   </script>
 </user-edit>
+
 <user-details>
   <h1>{model.name}</h1>
   <h2>email: {model.email}</h1>
   <script>
     var self = this
-    riot.get('user', opts.route, function(data) {
+    riot.store.get('user', opts.route, function(data) {
       self.model = data
       self.update()
     })
