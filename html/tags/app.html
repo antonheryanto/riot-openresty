@@ -24,12 +24,10 @@
   <login hide="{logged}"></login>
   <script>
     var self = this
-    riot.on('login logged logout', function (e, u) {
+    riot.on('login logout', function (e, u) {
       self.logged = e !== 'logout'
-      if (self.logged) {
-        self.user = u
-        riot.app.load(riot.app.parser(location.hash.slice(1)))
-      }
+      if (self.logged) self.user = u
+
       self.update()
     }).on('loading loaded', function (e) {
       self.loading = e === 'loading'

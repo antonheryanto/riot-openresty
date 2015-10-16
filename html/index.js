@@ -46,7 +46,7 @@ function Auth () {
   this.logged = function () {
     return riot.store.get('auth', function (r) {
       if (!r || !r.id) return
-      riot.trigger('logged', r)
+      riot.trigger('login', r)
     })
   }
 
@@ -59,12 +59,13 @@ function App (conf) {
   riot.cache = riot.cache || {}
   riot.store = conf.store || new jQueryStore()
   riot.auth = new Auth()
+  var app = this
 
   this.load = function (tag, params) {
     var route = typeof tag === 'string' ? { tag: tag, params: params } : tag
-    riot.trigger('before:load', this)
-    this.tags = riot.mount(conf.main, route.tag, { route: route.params })
-    riot.trigger('after:load', this)
+    riot.trigger('before:load')
+    app.tags = riot.mount(conf.main, route.tag, { route: route.params })
+    riot.trigger('after:load')
   }
 
   this.parser = function (hash) {
@@ -91,6 +92,9 @@ function App (conf) {
     return { tag: tag, params: params }
   }
 
+  riot.on('login', function () {
+    app.load(app.parser(window.location.hash.slice(1)))
+  })
   riot.route.parser(this.parser)
   riot.route(this.load)
   riot.mount('*')
