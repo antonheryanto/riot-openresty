@@ -19,7 +19,10 @@ function jQueryStore () {
   }
 
   this.del = function (api, arg, fn) {
-    arg = arg || {}
+    if (typeof arg === 'function') {
+      fn = arg
+      arg = {}
+    }
     arg.method = 'DELETE'
     return jQuery.get(base + api, arg, fn)
   }
