@@ -1,4 +1,3 @@
-local db = ngx.shared.db
 local properties = {'name', 'email'}
 local np = #properties
 local _M = {}
@@ -7,6 +6,7 @@ _M.AUTHORIZE = true
 local function one(self, id)
     if not id then return end
     
+    local db = self:db()
     local m = { id = id }
     local prefix = 'user:'..id..':'
     for i=1, np do
@@ -22,6 +22,7 @@ function _M.get(self, id)
     id = id or self.arg.id
     if id then return one(self, id) end
 
+    local db = self:db()
     local n = db:get('user')
     local m = {}
     local j = 1
