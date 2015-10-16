@@ -62,13 +62,12 @@ function App (conf) {
   var app = this
 
   this.load = function (tag, params) {
-    var route = typeof tag === 'string' ? { tag: tag, params: params } : tag
     riot.trigger('before:load')
-    app.tags = riot.mount(conf.main, route.tag, { route: route.params })
+    app.tags = riot.mount(conf.main, tag, { route: params })
     riot.trigger('after:load')
   }
 
-  this.parser = function (hash) {
+  this.route = function (hash) {
     var raw = hash.slice(2).split('?'),
       uri = raw[0].split('/'),
       qs = raw[1],
@@ -83,19 +82,19 @@ function App (conf) {
       })
     }
 
-    if (n === 1) return { tag: tag || 'home', params: params }
+    if (n === 1) return [tag || 'home', params]
 
     params.id = parseInt(uri[1], 10) || undefined
     var action = !params.id ? uri[1] : (uri[2] || 'details')
 
     tag = tag + '-' + action
-    return { tag: tag, params: params }
+    return [tag, params]
   }
 
   riot.on('login', function () {
-    app.load(app.parser(window.location.hash.slice(1)))
+    app.load.apply(null, app.route(window.location.hash.slice(1)))
   })
-  riot.route.parser(this.parser)
+  riot.route.parser(this.route)
   riot.route(this.load)
   riot.mount('*')
 }
