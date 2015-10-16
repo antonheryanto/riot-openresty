@@ -45,6 +45,7 @@ function _M.post(self)
     end
 
     local prefix = 'user:'..m.id..':'
+    local db = self:db()
     db:set('email:'..m.email, m.id)
     for i=1, np do
         local k = properties[i]
@@ -60,6 +61,7 @@ function _M.delete(self, id)
     if not id then return end
     
     local prefix = 'user:'..id..':'
+    local db = self:db()
     db:delete('email:', db:get(prefix..'email'))
     for i=1, np do
         db:delete(prefix .. properties[i])
