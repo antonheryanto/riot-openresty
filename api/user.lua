@@ -40,12 +40,12 @@ end
 function _M.post(self)
     local m = self.data or self.arg
     local has_id = tonumber(m.id)
+    local db = self:db()
     if not has_id then
         m.id = db:incr('user', 1)
     end
 
     local prefix = 'user:'..m.id..':'
-    local db = self:db()
     db:set('email:'..m.email, m.id)
     for i=1, np do
         local k = properties[i]

@@ -27,6 +27,7 @@ local function redis_db(self)
     local db  = redis:new()
     self.redis = db
     db.delete = db.del
+    db.incr = db.incrby
     db:set_timeout(config.timeout or 1000)
     local ok, err = db:connect(config.host or '127.0.0.1', config.port or 6379)
     if ok then return db end
